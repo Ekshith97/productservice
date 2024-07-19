@@ -3,6 +3,9 @@ package com.scaler.productservice.controllers;
 import com.scaler.productservice.models.Product;
 import com.scaler.productservice.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Array;
@@ -20,23 +23,27 @@ public class ProductController {
         this.productService = productService;
     }
     @GetMapping()
-    public List<Product> getAllProducts()
+    public ResponseEntity<List<Product>> getAllProducts()
     {
-        return new ArrayList<Product>();
+        ResponseEntity<List<Product>> responseEntity=new ResponseEntity<>(productService.getAllProducts(), HttpStatus.NOT_FOUND);
+       return  responseEntity;
+
     }
 
 
     @GetMapping("/{id}")
-    public Product getSingleProduct(@PathVariable("id") Long id)
+    public ResponseEntity<Product> getSingleProduct(@PathVariable("id") Long id)
     {
-       return  productService.getSingleProduct(id);
+        ResponseEntity<Product> response=new ResponseEntity<>(productService.getSingleProduct(id), HttpStatus.NOT_FOUND);
+        return  response;
+
     }
     @PostMapping()
     public Product addNewProduct(@RequestBody Product product)
     {
-       Product p= new Product();
-       p.setTitle("First Product");
-       return p;
+     // return productService.addNewProduct(product);
+        return new Product();
+
     }
 
     @PatchMapping("/{id}")
